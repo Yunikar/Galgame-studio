@@ -1,0 +1,22 @@
+node_modules/
+dist/
+dist-web/
+dist-export/
+*.local
+.DS_Store
+# Rust / Tauri
+src-tauri/target/
+**/src-tauri/target/
+**/src-tauri/gen/schemas/
+# 打包产物
+*.exe
+*.zip
+build/
+# 玩家 exe 随编辑器分发的位置
+editor/src-tauri/player/
+# 编辑器本地工作记录
+.workbuddy/
+# Vite 临时文件 / 旧构建产物备份
+*.timestamp-*.mjs
+dist_locked/
+dist_locked2/

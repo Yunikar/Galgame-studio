@@ -1,0 +1,27 @@
+{
+  "name": "galgame-studio",
+  "version": "0.1.1",
+  "private": true,
+  "description": "可视化 Galgame 制作工具：网页端编辑器 + 一键导出 exe",
+  "workspaces": [
+    "shared",
+    "editor",
+    "runtime"
+  ],
+  "scripts": {
+    "dev:editor": "npm run dev -w editor",
+    "dev:runtime": "npm run dev -w runtime",
+    "build:editor": "npm run build -w editor",
+    "build:runtime": "npm run build -w runtime",
+    "build:runtime:web": "npm run build:web -w runtime",
+    "build:template": "node scripts/build-web-template.mjs",
+    "smoke": "node scripts/run-smoke.mjs",
+    "check": "npm run typecheck && npm run smoke",
+    "typecheck": "npm run typecheck -w editor && npm run typecheck -w runtime",
+    "tauri:editor": "npm run tauri -w editor",
+    "tauri:runtime": "npm run tauri -w runtime",
+    "icons": "node scripts/make-icons.mjs",
+    "build:player": "npm run build -w runtime && npm run tauri -w runtime -- build --no-bundle && node scripts/copy-player.mjs",
+    "build:desktop": "npm run build:editor && npm run tauri -w editor -- build --no-bundle"
+  }
+}

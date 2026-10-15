@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "galgame-player",
+  "version": "0.1.1",
+  "identifier": "com.galgamestudio.player",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5174",
+    "beforeDevCommand": "",
+    "beforeBuildCommand": ""
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Galgame",
+        "width": 1280,
+        "height": 720,
+        "minWidth": 800,
+        "minHeight": 500,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": false,
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/icon.ico"],
+    "copyright": "",
+    "shortDescription": "Galgame 播放器",
+    "longDescription": "播放用 galgame-studio 制作的作品。把 exe 放在 story.json 同目录下运行即可。"
+  }
+}

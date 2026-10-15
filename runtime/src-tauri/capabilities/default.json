@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "播放器只需要调用自己定义的命令（read_game_file / read_game_text_file），不需要额外插件权限",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}

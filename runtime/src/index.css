@@ -1,0 +1,21 @@
+/* 游戏舞台样式由编辑器与运行时共享 */
+@import '../../shared/styles/game.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    background: #05070d;
+  }
+
+  body {
+    @apply font-sans text-white antialiased;
+    overflow: hidden;
+  }
+}

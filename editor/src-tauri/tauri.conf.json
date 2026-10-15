@@ -1,0 +1,40 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Galgame 编辑器",
+  "version": "0.1.1",
+  "identifier": "com.galgamestudio.editor",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "",
+    "beforeBuildCommand": ""
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Galgame 编辑器",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 1100,
+        "minHeight": 680,
+        "resizable": true,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+    "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/icon.ico"],
+    "copyright": "",
+    "shortDescription": "可视化 Galgame 制作工具",
+    "longDescription": "不需要写代码，用节点图就能做出自己的视觉小说，并一键导出成别人能玩的作品。",
+    "resources": {
+      "../../runtime/src-tauri/target/release/galgame-player.exe": "player/galgame-player.exe"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+[package]
+name = "galgame-player"
+version = "0.1.1"
+description = "Galgame 播放器：双击运行，读取同目录下的 story.json 与 assets/"
+authors = ["galgame-studio"]
+edition = "2021"
+rust-version = "1.77"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+base64 = "0.22"
+
+# 播放器要尽量小、启动尽量快
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"

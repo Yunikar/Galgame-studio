@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@gal/shared": ["../shared/src/index.ts"],
+      "@runtime/*": ["../runtime/src/*"],
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}

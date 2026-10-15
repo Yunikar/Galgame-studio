@@ -1,0 +1,217 @@
+/*
+ * 游戏舞台样式（编辑器与运行时共用）
+ * 纯 CSS 实现，不依赖 Tailwind 的 @apply，
+ * 这样编辑器内嵌预览与独立运行时看到的效果完全一致。
+ */
+
+/*
+ * 舞台尺寸方案：固定基准分辨率 1280×720，
+ * 外层容器算出 scale，用 transform 等比缩放，
+ * 这样舞台内容（含字号、对话框）永远保持 16:9，拉伸窗口也不变形。
+ */
+:root {
+  /* 舞台基准分辨率，改这里即可整体换分辨率（JS 侧见 STAGE_WIDTH / STAGE_HEIGHT） */
+  --stage-w: 1280px;
+  --stage-h: 720px;
+}
+
+/* 运行时最外层：铺满窗口，黑底，禁止滚动 */
+.player-root {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+/* 嵌在编辑器里的预览：尺寸由外层布局决定（flex-1 撑开），只有定位需求 */
+.stage-viewport {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+/* 舞台层：固定基准分辨率，绝对居中，等比缩放 */
+.stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--stage-w);
+  height: var(--stage-h);
+  margin-left: calc(var(--stage-w) / -2);
+  margin-top: calc(var(--stage-h) / -2);
+  transform-origin: center center;
+}
+
+/* UI 层：尺寸固定不缩放，贴在窗口边角 */
+.ui-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* 点击穿透到舞台 */
+  z-index: 200;
+}
+.ui-overlay > * {
+  pointer-events: auto;
+}
+
+/* 舞台内容：撑满 .stage（或编辑器预览容器） */
+.game-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  user-select: none;
+}
+
+/* 标题画面 / 结局画面的菜单按钮 */
+.menu-btn {
+  min-width: 220px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 10px 24px;
+  font-size: 16px;
+  color: #fff;
+  backdrop-filter: blur(4px);
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+  cursor: pointer;
+}
+.menu-btn:hover:not(:disabled) {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+.menu-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/*
+ * 对话框
+ * ⚠️ z-index 写死 100：舞台层级约定（从下到上）
+ *    背景 0 → 立绘 10 → 特效 20 → 对话框 100 → 选项 110 → 结束提示/调试 150+ → UI 层 200
+ *    立绘层的 z-index 见 runtime/src/player/SpriteLayer.tsx，永远不能大于这个值。
+ */
+.dialogue-box {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  z-index: 100;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 16px 24px;
+  backdrop-filter: blur(4px);
+}
+
+/* 选项按钮 */
+.choice-btn {
+  display: block;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.55);
+  padding: 12px 20px;
+  text-align: left;
+  color: #fff;
+  font-size: 15px;
+  backdrop-filter: blur(4px);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  cursor: pointer;
+}
+.choice-btn:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ---------------- 动画 ---------------- */
+@keyframes gal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes gal-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes gal-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes gal-shake {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-9px, 4px);
+  }
+  40% {
+    transform: translate(8px, -6px);
+  }
+  60% {
+    transform: translate(-6px, -3px);
+  }
+  80% {
+    transform: translate(5px, 5px);
+  }
+}
+@keyframes gal-flash {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes gal-fade-out-in {
+  0% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.anim-fade {
+  animation: gal-fade-in 0.35s ease both;
+}
+.anim-slide-left {
+  animation: gal-slide-left 0.35s ease both;
+}
+.anim-slide-right {
+  animation: gal-slide-right 0.35s ease both;
+}
+.anim-shake {
+  animation: gal-shake 0.5s ease-in-out;
+}
+/* 持续震动（状态型特效）：开启后一直循环，直到「特效关闭」节点把它关掉 */
+.anim-shake-loop {
+  animation: gal-shake 0.5s ease-in-out infinite;
+}
+.anim-flash {
+  animation: gal-flash 0.4s ease-out;
+}
